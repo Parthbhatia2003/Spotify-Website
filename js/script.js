@@ -248,11 +248,19 @@ function secondsToMinutesSeconds(seconds) {
 
 async function getSongs(folder) {
     currFolder = folder;
-    let response = await fetch(`${currFolder}/`); // Use relative path
+    let response = await fetch(`${currFolder}/`); // Use relative
     let html = await response.text();
+           if (!response || response.trim() === "") {
+    console.error("No valid response received.");
+    return [];
+}
     let div = document.createElement("div");
     div.innerHTML = html;
     let as = div.getElementsByTagName("a");
+           if (!as || as.length === 0) {
+        console.error("No songs found in the folder.");
+        return [];
+    }
     songs = [];
 
     for (let index = 0; index < as.length; index++) {
